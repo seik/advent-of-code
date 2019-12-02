@@ -1,24 +1,20 @@
 import math
 import strformat
-import parseutils
-
+import strutils
 
 var
     totalFuel = 0
-    line = ""
-    mass: int
 
 let file = open("input.txt")
 
 proc calculateFuel(mass: int, totalFuel: int = 0): int =
-    let fuel = int(floor(mass / 3) - 2)
+    let fuel = floor(mass / 3).int - 2
     if fuel < 0:
         return totalFuel
     else:
         return calculateFuel(fuel, totalFuel + fuel)
 
-while file.readLine(line):
-    discard parseInt(line, mass)
-    totalFuel += calculateFuel(mass)
+for line in lines(file):
+    totalFuel.inc calculateFuel(line.parseInt())
 
 echo fmt"The total fuel required is: {totalFuel}"
